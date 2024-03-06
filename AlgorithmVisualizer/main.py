@@ -20,7 +20,7 @@ class spotGUI:
         self.x = row * width
         self.y = row * width
         self.color = WHITE
-        self.neighbours = []
+        self.neighbors = []
         self.width = width
         self.total_rows = total_rows
 
@@ -76,7 +76,16 @@ class spotGUI:
 
     # implement later
     def updateNeighborNode(self, grid):
-        pass  
+        self.neighbors = []
+        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_Barrier():
+            self.neighbors.append(grid[self.row +1][self.col])
+        if self.row > 0 and not grid[self.row - 1][self.col].is_Barrier():
+            self.neighbors.append(grid[self.row - 1][self.col])
+        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier():
+            self.neighbors.append(grid[self.row][self.col + 1])
+        if self.col > 0 and not grid[self.row][self.col - 1].is_barrier():
+            self.neighbors.append(grid[self.row][self.col - 1])
+        
 
     def __lt__(self, other):
         return False
@@ -175,7 +184,7 @@ def draw(win, grid, rows, width):
 
     for row in grid:
         for spot in row:
-            spot.draw(win)
+            spot.drawGrid(win)
 
     formGrid(win, rows, width)
     pygame.display.update()
@@ -227,8 +236,8 @@ def main(win, width):
                     end == None
 
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and start and end:
+            if x.type == pygame.KEYDOWN:
+                if x.key == pygame.K_SPACE and start and end:
                     for row in grid:
                         for spot in row:
                             spot.updateNeighborNode(grid)
@@ -236,7 +245,7 @@ def main(win, width):
 
                     pathfindingAlgorithm(lambda: draw(win, grid, ROWS, width), grid, start, end)
 
-                if event.key == pygame.K_c:
+                if x.key == pygame.K_c:
                     start = None
                     end = None
                     grid = gridAllocation(ROWS, width)
@@ -246,4 +255,3 @@ def main(win, width):
 
 
 main(WIN, WIDTH)
-
