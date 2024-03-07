@@ -2,6 +2,8 @@ import pygame
 import math
 from queue import PriorityQueue
 from colours import *
+pygame.init()
+pygame.font.init()
 
 
 # setting up display grid
@@ -87,6 +89,12 @@ class spotGUI:
 
     def __lt__(self, other):
         return False
+    
+
+
+
+def reset(WIN, font):
+    pass
 
 
 
@@ -248,6 +256,9 @@ def main(win, width):
                     start = None
                     end = None
                     grid = gridAllocation(ROWS, width)
+
+
+            # implement a reset button function, reallocates teh grid to its original position, do it after the algorithm has concluded
 
 
     pygame.quit()
