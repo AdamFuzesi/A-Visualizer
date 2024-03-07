@@ -5,12 +5,10 @@ from colours import *
 
 
 # setting up display grid
-WIDTH = 900
+WIDTH = 800
 # not in term with the actual map simply sets the windows width
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
-WINDOW = pygame.display.set_mode((WIDTH,WIDTH))
 pygame.display.set_caption("A* pahtfinding algorithm")
-
 
 
 class spotGUI:
@@ -18,13 +16,13 @@ class spotGUI:
         self.row = row
         self.col = col
         self.x = row * width
-        self.y = row * width
+        self.y = col * width
         self.color = WHITE
         self.neighbors = []
         self.width = width
         self.total_rows = total_rows
 
-    # note for positioning: black = borders, orange = start node, purple = path, dark purple = end  etc...
+    # note for positioning: black = borders, orange = start node, purple = path, dark purple = end
         
     def getPosition(self):
         return self.row, self.col
@@ -52,19 +50,19 @@ class spotGUI:
     # functions here will set certain nodes as its designated color
 
     def makeStart(self):
-        self.color = ORANGE
+        self.color = CYAN
         
     def makeClosed(self):
         self.color = RED
     
     def makeOpen(self):
-        self.color = GREEN
+        self.color = FOREST_GREEN
 
     def makeBarrier(self):
         self.color = BLACK
 
     def makeEnd(self):
-        self.color = TURQUOISE
+        self.color = GREEN
 
     def makePath(self):
         self.color = PURPLE
@@ -77,18 +75,20 @@ class spotGUI:
     # implement later
     def updateNeighborNode(self, grid):
         self.neighbors = []
-        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_Barrier():
+        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].isBarrier():
             self.neighbors.append(grid[self.row +1][self.col])
-        if self.row > 0 and not grid[self.row - 1][self.col].is_Barrier():
+        if self.row > 0 and not grid[self.row - 1][self.col].isBarrier():
             self.neighbors.append(grid[self.row - 1][self.col])
-        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier():
+        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].isBarrier():
             self.neighbors.append(grid[self.row][self.col + 1])
-        if self.col > 0 and not grid[self.row][self.col - 1].is_barrier():
+        if self.col > 0 and not grid[self.row][self.col - 1].isBarrier():
             self.neighbors.append(grid[self.row][self.col - 1])
         
 
     def __lt__(self, other):
         return False
+
+
 
 
 def heuristics(p1,p2):
@@ -101,7 +101,7 @@ def heuristics(p1,p2):
 def reconstructPath(Origin_point, current, draw):
     while current in Origin_point:
         current = Origin_point[current]
-        current.makepath()
+        current.makePath()
         draw()
 
 
@@ -116,7 +116,6 @@ def pathfindingAlgorithm(draw, grid, start, end):
 
     g_score = {spot: float("inf") for row in grid for spot in row}
     g_score[start] = 0
-    
 
     f_score = {spot: float("inf") for row in grid for spot in row}
     f_score[start] = heuristics(start.getPosition(), end.getPosition())
@@ -190,7 +189,7 @@ def draw(win, grid, rows, width):
     pygame.display.update()
 
 
-def clickedPosition(pos, rows, width):
+def clickedPosition(pos, rows, width): 
     gap = width // rows 
     y, x = pos
     row = y // gap
@@ -242,8 +241,8 @@ def main(win, width):
                         for spot in row:
                             spot.updateNeighborNode(grid)
 
-
                     pathfindingAlgorithm(lambda: draw(win, grid, ROWS, width), grid, start, end)
+                    # by pressing space it shows the path of the algorithm again once the borders are formed and path has been found
 
                 if x.key == pygame.K_c:
                     start = None
