@@ -10,10 +10,11 @@ pygame.font.init()
 WIDTH = 800
 # not in term with the actual map simply sets the windows width
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
-pygame.display.set_caption("A* pahtfinding algorithm")
+pygame.display.set_caption("A* pathfinding algorithm")
 
 
 class spotGUI:
+
     def __init__(self,row,col,width,total_rows):
         self.row = row
         self.col = col
@@ -23,6 +24,17 @@ class spotGUI:
         self.neighbors = []
         self.width = width
         self.total_rows = total_rows
+
+    def updateNeighborNode(self, grid):
+        self.neighbors = []
+        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].isBarrier():
+            self.neighbors.append(grid[self.row +1][self.col])
+        if self.row > 0 and not grid[self.row - 1][self.col].isBarrier():
+            self.neighbors.append(grid[self.row - 1][self.col])
+        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].isBarrier():
+            self.neighbors.append(grid[self.row][self.col + 1])
+        if self.col > 0 and not grid[self.row][self.col - 1].isBarrier():
+            self.neighbors.append(grid[self.row][self.col - 1])
 
     # note for positioning: black = borders, orange = start node, purple = path, dark purple = end
         
@@ -41,6 +53,8 @@ class spotGUI:
     
     def isStart(self):
         return self.color == ORANGE
+    
+    
     
     def isEnd(self):
         return self.color == DARK_PURPLE
@@ -73,30 +87,12 @@ class spotGUI:
         # argument to draw in cube
         pygame.draw.rect(WIN, self.color, (self.x, self.y, self.width, self.width))
 
-
-    # implement later
-    def updateNeighborNode(self, grid):
-        self.neighbors = []
-        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].isBarrier():
-            self.neighbors.append(grid[self.row +1][self.col])
-        if self.row > 0 and not grid[self.row - 1][self.col].isBarrier():
-            self.neighbors.append(grid[self.row - 1][self.col])
-        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].isBarrier():
-            self.neighbors.append(grid[self.row][self.col + 1])
-        if self.col > 0 and not grid[self.row][self.col - 1].isBarrier():
-            self.neighbors.append(grid[self.row][self.col - 1])
-        
-
     def __lt__(self, other):
         return False
-    
-
 
 
 def reset(WIN, font):
     pass
-
-
 
 
 def heuristics(p1,p2):
@@ -257,9 +253,8 @@ def main(win, width):
                     end = None
                     grid = gridAllocation(ROWS, width)
 
-
             # implement a reset button function, reallocates teh grid to its original position, do it after the algorithm has concluded
-
+            # implement a exit condition if the algorithm doesnt find a path to the endpoint
 
     pygame.quit()
 
