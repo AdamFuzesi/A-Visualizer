@@ -5,7 +5,6 @@ from colours import *
 pygame.init()
 pygame.font.init()
 
-
 # setting up display grid
 WIDTH = 800
 # not in term with the actual map simply sets the windows width
@@ -14,7 +13,6 @@ pygame.display.set_caption("A* pathfinding algorithm")
 
 
 class spotGUI:
-
     def __init__(self,row,col,width,total_rows):
         self.row = row
         self.col = col
@@ -54,22 +52,19 @@ class spotGUI:
     def isStart(self):
         return self.color == ORANGE
     
-    
-    
     def isEnd(self):
         return self.color == DARK_PURPLE
     
     def reset(self):
         return self.color == WHITE
     
-
     # functions here will set certain nodes as its designated color
 
     def makeStart(self):
-        self.color = CYAN
+        self.color = RED
         
     def makeClosed(self):
-        self.color = RED
+        self.color = CYAN
     
     def makeOpen(self):
         self.color = FOREST_GREEN
@@ -90,17 +85,14 @@ class spotGUI:
     def __lt__(self, other):
         return False
 
-
 def reset(WIN, font):
     pass
-
 
 def heuristics(p1,p2):
     # Manhattan distance calculations
     x1, y1 = p1
     x2, y2 = p2
     return abs(x1 - x2) + abs(y1 - y2)
-
 
 def reconstructPath(Origin_point, current, draw):
     while current in Origin_point:
